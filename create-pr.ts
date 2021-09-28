@@ -86,6 +86,22 @@ function saveContent(
   });
 }
 
+async function createPR(
+  head: string,
+  base: string,
+  title: string,
+  repo: string,
+  owner: string,
+) {
+  return ghClient.request("POST /repos/{owner}/{repo}/pulls", {
+    owner,
+    repo,
+    head,
+    base,
+    title,
+  });
+}
+
 function modifyYamlContent(originalContent: string) {
   const data = yamlParse(originalContent) as any;
   data.field2 = "something fancy";
@@ -97,6 +113,9 @@ async function main(): Promise<void> {
   // console.log(JSON.stringify(repositories));
 
   const newBranchName = "test";
+  const path = "some.yml";
+  const message = "update to something fancy";
+  const prTitle = "thou shalt merge";
   const newBranch = await branchOffMaster(
     repo,
     root,
@@ -104,8 +123,6 @@ async function main(): Promise<void> {
     `refs/heads/${newBranchName}`,
   );
   console.log(JSON.stringify(newBranch));
-  const path = "some.yml";
-  const message = "update to something fancy";
   const originalContent = await getContent(repo, root, path);
   const modifiedContent = modifyYamlContent(originalContent.text);
   console.log(`modified ${originalContent} to ${modifiedContent}`);
@@ -118,6 +135,14 @@ async function main(): Promise<void> {
     root,
   );
   console.log(JSON.stringify(saveResult));
+  const createPRResult = await createPR(
+    newBranchName,
+    mainBranchName,
+    prTitle,
+    repo,
+    root,
+  );
+  console.log(JSON.stringify(createPRResult));
   return;
 }
 
