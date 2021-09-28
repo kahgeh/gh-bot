@@ -13,7 +13,6 @@ import { TextContent } from "./types/bot.ts";
 
 const baseUrl = "https://api.github.com";
 const mainBranchName = "main";
-const type = "users"; // 'user'|'org'
 
 const ghClient = new Octokit({
   baseUrl,
@@ -109,9 +108,6 @@ function modifyYamlContent(originalContent: string) {
 }
 
 async function main(): Promise<void> {
-  // const repositories = await ghClient.request(`GET /${type}/{org}/repos`, { org });
-  // console.log(JSON.stringify(repositories));
-
   const newBranchName = "test";
   const path = "some.yml";
   const message = "update to something fancy";

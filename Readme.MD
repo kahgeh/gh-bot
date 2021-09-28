@@ -20,7 +20,7 @@ e.g.
 
 # Available sample
 
-Incomplete - create-pr.ts : create branch, make change and create a PR
+create-pr.ts : create branch, make change and create a PR
 
 
 # References
